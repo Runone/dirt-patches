@@ -39,11 +39,11 @@ class Roomba {
         let maxX = this.columnsLength - 1;
         let maxY = this.rowsLength - 1;
         //need to check if dirt is in valid position
-        if(xPos > maxX || xPos < 0 || yPos > maxY || maxY < 0) {
+        if (xPos > maxX || xPos < 0 || yPos > maxY || maxY < 0) {
             console.log('Can not place dirt patches on board');
         }
         let boardPos = this.board[yPos][xPos];
-        if(boardPos !== 'dirt' && boardPos !== 'hoover') {
+        if (boardPos !== 'dirt' && boardPos !== 'hoover') {
             this.board[yPos][xPos] = 'dirt';
         } else {
             console.log('dirt patch is already placed on that position');
@@ -56,5 +56,62 @@ class Roomba {
             this.placeDirt(parseInt(dirtPatch[0]), dirtPatch[1]);
         }
     }
-
+    //clean dirt patches on board
+    cleanDirt(xPos, yPos) {
+        if (this.board[yPos][xPos] === 'dirt') {
+            this.dirtClean++;
+        }
+        this.hooveringPosition(xPos, yPos);
+    }
+    moveRoomba(directions) {
+        switch (directions) {
+        //move north
+        case 'N' || 'n': {
+            let xPos = this.hooveringPosition.x;
+            let yPos = this.hooveringPosition.y + 1;
+            //check if move is possible
+            if (yPos > this.rowsLength - 1) {
+                console.log('Roomba can not move north from that position');
+            } else {
+                //call cleanDirt function to see if it cleaned a dirt patch
+                this.cleanDirt(xPos, yPos);
+            }
+            break;
+        }
+        case 'E' || 'e': {
+            let xPos = this.hooveringPosition.x + 1;
+            let yPos = this.hooveringPosition.y;
+            if (xPos > this.columnsLength - 1) {
+                console.log('Roomba can not move east from that position');
+            } else {
+                //call cleanDirt function to see if it cleaned a dirt patch
+                this.cleanDirt(xPos, yPos);
+            }
+            break;
+        }
+        case 'S' || 's': {
+            let xPos = this.hooveringPosition.x;
+            let yPos = this.hooveringPosition.y - 1;
+            if (yPos < 0) {
+                console.log('Roomba can not move south from that position');
+            } else {
+                //call cleanDirt function to see if it cleaned a dirt patch
+                this.cleanDirt(xPos, yPos);
+            }
+            break;
+        }
+        case 'W' || 'w': {
+            let xPos = this.hooveringPosition.x -1;
+            let yPos = this.hooveringPosition.y;
+            if (xPos < 0) {
+                console.log('Roomba can not move west from that position');
+            } else {
+                //call cleanDirt function to see if it cleaned a dirt patch
+                this.cleanDirt(xPos, yPos);
+            }
+            break;
+        }
+        default:
+        }
+    }
 }
