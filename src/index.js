@@ -114,4 +114,15 @@ class Roomba {
         default:
         }
     }
+    instructions(movements) {
+        for (let i = 0; i < movements.length; i++) {
+            this.moveRoomba(movements[i]);
+        }
+    }
 }
+
+//intialize roomba class and data input.txt
+const roomba = new Roomba(parseInt(boardSize[0], parseInt(boardSize[1])));
+roomba.hooveringPosition(parseInt(start[0], start[1]));
+roomba.addDirt(dirtPatches);
+roomba.instructions(directions);
