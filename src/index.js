@@ -51,9 +51,9 @@ class Roomba {
     }
     //adding dirt to board
     addDirt(dirtPatches) {
-        for (let i = 0; i < dirtPatches; i++) {
+        for (let i = 0; i < dirtPatches.length; i++) {
             let dirtPatch = dirtPatches[i].split(' ');
-            this.placeDirt(parseInt(dirtPatch[0]), dirtPatch[1]);
+            this.placeDirt(parseInt(dirtPatch[0]), parseInt(dirtPatch[1]));
         }
     }
     //clean dirt patches on board
@@ -61,14 +61,15 @@ class Roomba {
         if (this.board[yPos][xPos] === 'dirt') {
             this.dirtClean++;
         }
+        this.board[this.hooverPos.y][this.hooverPos.x] = '';
         this.hooveringPosition(xPos, yPos);
     }
     moveRoomba(directions) {
         switch (directions) {
         //move north
         case 'N' || 'n': {
-            let xPos = this.hooveringPosition.x;
-            let yPos = this.hooveringPosition.y + 1;
+            let xPos = this.hooverPos.x;
+            let yPos = this.hooverPos.y + 1;
             //check if move is possible
             if (yPos > this.rowsLength - 1) {
                 console.log('Roomba can not move north from that position');
@@ -79,8 +80,8 @@ class Roomba {
             break;
         }
         case 'E' || 'e': {
-            let xPos = this.hooveringPosition.x + 1;
-            let yPos = this.hooveringPosition.y;
+            let xPos = this.hooverPos.x + 1;
+            let yPos = this.hooverPos.y;
             if (xPos > this.columnsLength - 1) {
                 console.log('Roomba can not move east from that position');
             } else {
@@ -90,8 +91,8 @@ class Roomba {
             break;
         }
         case 'S' || 's': {
-            let xPos = this.hooveringPosition.x;
-            let yPos = this.hooveringPosition.y - 1;
+            let xPos = this.hooverPos.x;
+            let yPos = this.hooverPos.y - 1;
             if (yPos < 0) {
                 console.log('Roomba can not move south from that position');
             } else {
@@ -101,8 +102,8 @@ class Roomba {
             break;
         }
         case 'W' || 'w': {
-            let xPos = this.hooveringPosition.x -1;
-            let yPos = this.hooveringPosition.y;
+            let xPos = this.hooverPos.x -1;
+            let yPos = this.hooverPos.y;
             if (xPos < 0) {
                 console.log('Roomba can not move west from that position');
             } else {
@@ -122,7 +123,12 @@ class Roomba {
 }
 
 //intialize roomba class and data input.txt
-const roomba = new Roomba(parseInt(boardSize[0], parseInt(boardSize[1])));
-roomba.hooveringPosition(parseInt(start[0], start[1]));
+const roomba = new Roomba(parseInt(boardSize[0]), parseInt(boardSize[1]));
+roomba.hooveringPosition(parseInt(start[0]), parseInt(start[1]));
 roomba.addDirt(dirtPatches);
 roomba.instructions(directions);
+
+//last position of roomba after instructions
+console.log(roomba.hooverPos.x, roomba.hooverPos.y);
+//how many dirt patches the roomba cleaned
+console.log(roomba.dirtClean);
