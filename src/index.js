@@ -31,9 +31,30 @@ class Roomba {
         this.hooverPos = {
             x: xPos,
             y: yPos
-        }
+        };
         this.board[yPos][xPos] = 'hoover';
     }
-
+    //placing dirt patches to the board
+    placeDirt(xPos, yPos) {
+        let maxX = this.columnsLength - 1;
+        let maxY = this.rowsLength - 1;
+        //need to check if dirt is in valid position
+        if(xPos > maxX || xPos < 0 || yPos > maxY || maxY < 0) {
+            console.log('Can not place dirt patches on board');
+        }
+        let boardPos = this.board[yPos][xPos];
+        if(boardPos !== 'dirt' && boardPos !== 'hoover') {
+            this.board[yPos][xPos] = 'dirt';
+        } else {
+            console.log('dirt patch is already placed on that position');
+        }
+    }
+    //adding dirt to board
+    addDirt(dirtPatches) {
+        for (let i = 0; i < dirtPatches; i++) {
+            let dirtPatch = dirtPatches[i].split(' ');
+            this.placeDirt(parseInt(dirtPatch[0]), dirtPatch[1]);
+        }
+    }
 
 }
